@@ -1,3 +1,6 @@
+Exploring COVID-19 Data 
+Utilized Skills: Joins, Common Table Expressions (CTEs), Temporary Tables, Window Functions, Aggregate Functions, View Creation, & Data Type Conversions
+
 SELECT *
 FROM PortfolioProjects..CovidDeaths
 WHERE continent is not null
@@ -81,9 +84,8 @@ WHERE continent is not null
 GROUP BY continent
 ORDER BY Total_Death_Count desc
 
+	
 --Let's break things down by continent
-
-
 --Showing continents with the highest death count per population
 SELECT
    continent, MAX(CAST(total_deaths AS INT)) AS Total_Death_Count
@@ -104,6 +106,7 @@ WHERE continent IS NOT NULL
 ORDER BY 1, 2
 
 --Looking at Total Population vs. Vaccinations
+--Displays the percentage of the population that has received at least one dose of the COVID-19 vaccine
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
 , SUM(CONVERT(INT, vac.new_vaccinations)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS Rolling_People_Vaccinated
 FROM PortfolioProjects..CovidDeaths dea
@@ -135,7 +138,7 @@ ORDER BY
     2, 3
 
 
---Use CTE
+--Using CTE to execute calculations with a PARTITION BY clause in the preceding query
 WITH PopvsVac (Continent, Location, Date, Population, New_Vaccinations, Rolling_People_Vaccinated)
 AS
 (
@@ -188,8 +191,7 @@ FROM PopvsVac
 ORDER BY Location, Date; -- Move ORDER BY to the final SELECT statement
 
 
---Temp Table
-
+--Utilizing a temp table to execute calculations with a `PARTITION BY` clause in the preceding query
 DROP TABLE IF EXISTS #PercentPopulationVaccinated
 CREATE TABLE #PercentPopulationVaccinated
 (
@@ -228,7 +230,7 @@ IF OBJECT_ID('PercentPopulationVaccinated', 'V') IS NOT NULL
     DROP VIEW PercentPopulationVaccinated;
 GO
 
--- Create the view
+-- Creating a view to store data for later visualizations
 CREATE VIEW PercentPopulationVaccinated AS 
 SELECT
     dea.continent,
