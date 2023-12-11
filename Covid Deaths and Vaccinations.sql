@@ -1,4 +1,4 @@
-Exploring COVID-19 Data 
+COVID-19 Data Exploration
 Utilized Skills: Joins, Common Table Expressions (CTEs), Temporary Tables, Window Functions, Aggregate Functions, View Creation, & Data Type Conversions
 
 SELECT *
